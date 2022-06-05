@@ -14,6 +14,7 @@ import (
 	"time"
 )
 
+// ProvisionRequest is the request data structure of the vizyon provision api with required params
 type ProvisionRequest struct {
 	ReturnUrl   string // Son kullanıcının ödemeyi onayladıktan sonra yönlendirileceği Url adresi
 	OrderId     string // Bayinin oluşturduğu benzersiz sipariş numarasıdır.
@@ -22,6 +23,7 @@ type ProvisionRequest struct {
 	Card        ProvisionCardData
 }
 
+// ProvisionResponse is the response data structure of the vizyon provision api
 type ProvisionResponse struct {
 	Status       string // Yapılan API isteğinin başarılı olup olmadığını gösterir.
 	ErrorCode    int64  // Yapılan istek başarısız olursa, hata kodu döner.
@@ -34,6 +36,7 @@ type ProvisionResponse struct {
 	Language     string // İstek sonucunda dönen metinlerin dilini ayarlamak için kullanılır.
 }
 
+// ProvisionCardData is the data structure of the credit card data which required for the ProvisionRequest
 type ProvisionCardData struct {
 	HolderName  string // Kart sahibinin adı ve soyadıdır.
 	Number      string // Kart numarasıdır.
@@ -50,6 +53,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+// PostAPIRequest creates a https post request with provided arguments
 func PostAPIRequest(random string, provisionRequest ProvisionRequest, printResponse bool) (response ProvisionResponse, err error) {
 
 	dataToEncrypt := fmt.Sprintf("%v%v%v", provisionRequest.OrderId, provisionRequest.Amount, provisionRequest.ReturnUrl)
@@ -96,6 +100,7 @@ func PostAPIRequest(random string, provisionRequest ProvisionRequest, printRespo
 	return response, nil
 }
 
+// GenerateHash is creates a new hmac encrypted text via sha256 encryption with provided arguments
 func GenerateHash(random string, dataToEncrypt string) (string, error) {
 
 	// Create a new HMAC by defining the hash type and the key (as byte array)
