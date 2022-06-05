@@ -59,7 +59,7 @@ func PostAPIRequest(random string, provisionRequest ProvisionRequest, printRespo
 		fmt.Printf("JSON marshal error: %v", err)
 	}
 
-	generatedHash, err := generateHash(random, dataToEncrypt)
+	generatedHash, err := GenerateHash(random, dataToEncrypt)
 	if err != nil {
 		return ProvisionResponse{}, err
 	}
@@ -82,6 +82,7 @@ func PostAPIRequest(random string, provisionRequest ProvisionRequest, printRespo
 	body, _ := ioutil.ReadAll(resp.Body)
 
 	if printResponse {
+		fmt.Println("generatedHash:", generatedHash)
 		fmt.Println("response Status:", resp.Status)
 		fmt.Println("response Headers:", resp.Header)
 		fmt.Println("response Body:", string(body))
@@ -95,7 +96,7 @@ func PostAPIRequest(random string, provisionRequest ProvisionRequest, printRespo
 	return response, nil
 }
 
-func generateHash(random string, dataToEncrypt string) (string, error) {
+func GenerateHash(random string, dataToEncrypt string) (string, error) {
 
 	// Create a new HMAC by defining the hash type and the key (as byte array)
 	h := hmac.New(sha256.New, []byte(privateKey))

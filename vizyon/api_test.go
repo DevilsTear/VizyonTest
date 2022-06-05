@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 	"time"
-	system_info "vizyon-test/system-info"
+	systemInfo "vizyon-test/system-info"
 )
 
 type testData struct {
@@ -18,7 +18,7 @@ type testData struct {
 var tests []testData
 
 func init() {
-	system_info.GetSystemInfo()
+	systemInfo.GetSystemInfo()
 	min := 100
 	max := 300
 
@@ -104,4 +104,13 @@ func BenchmarkPostAPIRequest(b *testing.B) {
 			},
 		}, false)
 	}
+}
+
+func ExampleGenerateHash() {
+	random, orderId, amount, returnUrl := "46699", "8051606", "200", "https://cc.mpay.software/cb.php?return_url=&p=31d565f77d64f8a453d6e598fb8c816026c9e72a3b0e98b3e7778bf17e805f09"
+	dataToEncrypt := fmt.Sprintf("%v%v%v", orderId, amount, returnUrl)
+	hash, _ := GenerateHash(random, dataToEncrypt)
+	fmt.Println(hash)
+	// Output:
+	// QVBJS2V5OmJjNGZiNGZlODQ3MTRmODJiODI5OTM2ZWZmNTk2MjQ2JlJhbmRvbTo0NjY5OSZTaWduYXR1cmU6NTUyMDdiNzQwYWE5Nzk0NDU4OWQ1YzE3NjdhMWY5NjI0NDhmYWYxOTU3ODU5YTZkZjc4NjkxNTA0ZjljZDllYw==
 }
